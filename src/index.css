@@ -11,18 +11,19 @@
   default: true;
   --color-primary: #CAEB66;
   --color-secondary: #03373D;
-}
-
+ } 
+ 
  body{
    font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  }
+  }  
 
   .menu a.active {
       text-decoration: underline;
       color: green;
-  }
+  } 
+   
   .menu a{
     margin: 10px;
     text-decoration: none;

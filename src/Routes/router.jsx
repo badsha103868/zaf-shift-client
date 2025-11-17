@@ -6,6 +6,9 @@ import Services from "../Pages/Services/Services";
 import About from "../Pages/About/About";
 import Pricing from "../Pages/Pricing/Pricing";
 import Rider from "../Pages/Rider/Rider";
+import AuthLayout from "../Layouts/AuthLayout";
+import Login from "../Pages/Auth/Login/Login";
+import Register from "../Pages/Auth/Register/Register";
 
 
   export const router = createBrowserRouter([
@@ -42,4 +45,18 @@ import Rider from "../Pages/Rider/Rider";
 
     ]
   },
+  {
+    path:'/',
+    Component: AuthLayout,
+    children:[
+      {
+        path: '/login',
+        Component:Login
+      },
+      {
+        path: '/register',
+        Component:Register
+      },
+    ]
+  }
 ]);   
