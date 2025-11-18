@@ -12,9 +12,9 @@ const Navbar = () => {
      .then(result =>{
       console.log(result.user)
      })
-     .catch(error=>[
+     .catch(error=>{
       console.log(error.message)
-     ])
+   })
    }
 
   const links= <>
@@ -46,6 +46,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
+
     {
       user ? <a onClick={handleLogout} className="btn">Logout</a>:<>
        <Link to='/login' className="btn bg-gray-300 m-2">Login</Link>
@@ -53,6 +54,9 @@ const Navbar = () => {
       
       </>
     }
+
+    <Link to='/beARider' className="btn btn-primary text-black m-2">Be a rider</Link>
+
   </div>
 </div>
   );

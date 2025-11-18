@@ -3,20 +3,50 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
 import { Link } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import axios from 'axios';
 
 const Register = () => {
   // react hook form 
   const {register,handleSubmit, formState: {errors}} = useForm()
 
   //  useHook import
-  const {registerUser}=useAuth();
+  const {registerUser, updateUserProfile}=useAuth();
    
   const handleRegistration =(data)=>{
     console.log('after register', data)
+    const profileImg = data.photo[0];
+      
     registerUser(data.email, data.password)
     .then(result=>{
       const user = result.user;
       console.log(user)
+
+      // store the image and get the photo url
+      const formData = new FormData();
+      formData.append('image', profileImg)
+  
+  const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
+
+  axios.post(image_API_URL, formData)
+  .then(res=> {
+     console.log('after image upload', res.data.data.url)
+   //  update user  profile
+
+   const updateProfile =  {
+    displayName : data.name,
+    photoURL : res.data.data.url
+   }
+   updateUserProfile( updateProfile )
+   .then(()=>{
+    console.log('user profile updated')
+   })
+   .catch(error=>{
+    console.log(error.message)
+   })
+
+  })
+    
+
     })
     .catch(error=>{
       console.log(error.message)
@@ -27,13 +57,31 @@ const Register = () => {
     <div  className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
       <form className="card-body " onSubmit={handleSubmit(handleRegistration)}>
      <h3 className="text-center font-bold text-3xl">Welcome to Zap Shift </h3>
-      <p className=" mt-3 font-bold">please register</p>
+      <p className=" mt-3 font-bold text-lg">Please register</p>
          
          <fieldset className="fieldset">
+
+          {/*name field*/}
+          <label className="label">Name</label>
+          <input type="text" {...register('name', {required: true})} className="input w-full" placeholder="Your name" />
+
+           {errors.name?.type === "required" && (
+        <p className='text-red-500'>Name is required</p>
+         )}
+
+          {/*phot image  field*/}
+          <label className="label">Photo</label>
+          <input type="file" {...register('photo', {required: true})} className="file-input w-full" placeholder="Your photo" />
+
+           {errors.photo?.type === "required" && (
+        <p className='text-red-500'>Photo is required</p>
+         )}
 
           {/* email */}
           <label className="label">Email</label>
           <input type="email" {...register('email', {required: true})} className="input w-full" placeholder="Email" />
+
+          
           {errors.email?.type === "required" && (
         <p className='text-red-500'>Email is required</p>
          )}
