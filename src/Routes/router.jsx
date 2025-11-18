@@ -9,6 +9,7 @@ import Rider from "../Pages/Rider/Rider";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
+import PrivateRoute from "./PrivateRoute";
 
 
   export const router = createBrowserRouter([
@@ -40,7 +41,9 @@ import Register from "../Pages/Auth/Register/Register";
       
       {
         path: '/rider',
-        Component: Rider
+        element: <PrivateRoute>
+           <Rider></Rider>
+        </PrivateRoute>
       },
 
     ]

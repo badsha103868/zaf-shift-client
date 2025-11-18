@@ -1,13 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import axios from 'axios';
 
 const Register = () => {
   // react hook form 
   const {register,handleSubmit, formState: {errors}} = useForm()
+  const location = useLocation()
+  console.log('in the register',location)
+  const navigate = useNavigate()
 
   //  useHook import
   const {registerUser, updateUserProfile}=useAuth();
@@ -20,7 +23,7 @@ const Register = () => {
     .then(result=>{
       const user = result.user;
       console.log(user)
-
+        
       // store the image and get the photo url
       const formData = new FormData();
       formData.append('image', profileImg)
@@ -38,7 +41,10 @@ const Register = () => {
    }
    updateUserProfile( updateProfile )
    .then(()=>{
-    console.log('user profile updated')
+    console.log('user profile updated done ')
+     
+    navigate(location?.state || '/' )
+       
    })
    .catch(error=>{
     console.log(error.message)
@@ -115,7 +121,7 @@ const Register = () => {
          
           <button className="btn btn-neutral mt-4">Register</button>
         </fieldset>
-        <p>Already Have An Account ? <Link
+        <p>Already Have An Account ? <Link state={location.state}
          className="text-blue-400 underline text-lg" to='/login'>Login</Link></p>
       </form>
       <SocialLogin></SocialLogin>

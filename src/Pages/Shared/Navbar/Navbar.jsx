@@ -55,7 +55,7 @@ const Navbar = () => {
       </>
     }
 
-    <Link to='/beARider' className="btn btn-primary text-black m-2">Be a rider</Link>
+    <Link to='/rider' className="btn btn-primary text-black m-2">Be a rider</Link>
 
   </div>
 </div>
