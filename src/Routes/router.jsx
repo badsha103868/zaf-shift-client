@@ -10,6 +10,7 @@ import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
 import PrivateRoute from "./PrivateRoute";
+import SendParcel from "../Pages/SendParcel/SendParcel";
 
 
   export const router = createBrowserRouter([
@@ -33,6 +34,13 @@ import PrivateRoute from "./PrivateRoute";
       {
         path: '/about',
         Component: About
+      },
+      {
+        path: '/sendParcel',
+        element: <PrivateRoute>
+           <SendParcel></SendParcel>
+        </PrivateRoute>,
+        loader: ()=> fetch('/serviceCenters.json').then(res => res.json())
       },
       {
         path: '/pricing',

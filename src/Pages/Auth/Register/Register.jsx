@@ -107,7 +107,7 @@ const Register = () => {
           {errors.password?.type === "required" && (
         <p className='text-red-500'>Password is required</p>
          )}
-
+ 
           {/* length error */}
 
           {errors.password?.type === "minLength" && (
