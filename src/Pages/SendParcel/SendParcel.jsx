@@ -72,6 +72,9 @@ const axiosSecure = useAxiosSecure();
    }
    console.log("total cost", cost)
 
+  //  post korar somoy data ar sta cost o patano
+   data.cost = cost;
+
   //  sweat alert ar maddome conform kora
     Swal.fire({
   title: "Agree with the Cost?",
@@ -152,7 +155,7 @@ const axiosSecure = useAxiosSecure();
             <input
               type="number"
               {...register("parcelWeight")}
-              className="input w-full"
+              className="input w-full" 
               placeholder="Parcel Weight"
             />
           </fieldset>
