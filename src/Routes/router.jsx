@@ -13,6 +13,7 @@ import PrivateRoute from "./PrivateRoute";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import MyParcel from "../Pages/Dashboard/MyParcel/MyParcel";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 
 
 
@@ -83,6 +84,10 @@ import MyParcel from "../Pages/Dashboard/MyParcel/MyParcel";
         path:'my-parcel',
         Component:MyParcel
 
+      },
+      {
+        path: 'payment/:parcelId',
+        Component: Payment
       }
     ]
   }

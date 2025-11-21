@@ -5,9 +5,9 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FiEdit } from "react-icons/fi";
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyParcel = () => {
-   
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
@@ -37,8 +37,7 @@ const MyParcel = () => {
         axiosSecure.delete(`/parcels/${id}`).then((res) => {
           console.log(res.data);
           if (res.data.deletedCount) {
-           
-            refetch()
+            refetch();
 
             Swal.fire({
               title: "Deleted!",
@@ -72,7 +71,8 @@ const MyParcel = () => {
               <th></th>
               <th>Name</th>
               <th>Cost</th>
-              <th>Payment Status</th>
+              <th>Payment</th>
+              <th>Delivery Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -82,7 +82,19 @@ const MyParcel = () => {
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
-                <td>Blue</td>
+                <td>
+                {
+                  //  payment status conditional set
+                  parcel.paymentStatus === 'paid' ? <span className="text-green-400">Paid</span>:
+          <Link to={`/dashboard/payment/${parcel._id}`}>
+                   <button className="btn btn-sm text-black btn-primary">Pay</button>
+                  </Link>
+
+
+
+
+                }</td>
+                <td>{parcel.deliveryStatus}</td>
                 <td className="space-x-3">
                   <button className="btn btn-square hover:bg-primary">
                     <FiEdit></FiEdit>
