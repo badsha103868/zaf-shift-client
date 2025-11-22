@@ -1,24 +1,26 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 
 const SendParcel = () => {
-  const { register,
-     handleSubmit,
-      control , 
+  const {
+    register,
+    handleSubmit,
+    control,
     // formState: { errors }
-} = useForm();
-    
-// user data 
-const {user} = useAuth()
+  } = useForm();
 
-// axios secure
-const axiosSecure = useAxiosSecure();
+  // user data
+  const { user } = useAuth();
 
+  // navigate
+  const navigate = useNavigate()
 
+  // axios secure
+  const axiosSecure = useAxiosSecure();
 
   //   json data received
   const serviceCenters = useLoaderData();
@@ -27,81 +29,87 @@ const axiosSecure = useAxiosSecure();
   //   no repeat same district
   const regions = [...new Set(regionsDuplicate)];
 
-//   wach ar poriborte useWatch use 
-  const senderRegion = useWatch({control, name: "senderRegion"})
-//   receiver region
-  const receiverRegion = useWatch({control, name: "receiverRegion"})
+  //   wach ar poriborte useWatch use
+  const senderRegion = useWatch({ control, name: "senderRegion" });
+  //   receiver region
+  const receiverRegion = useWatch({ control, name: "receiverRegion" });
 
   //   akhon region vittik district gulo k dekhanor jonno
-  const districtsByRegion = region => {
-    const regionDistricts = serviceCenters.filter(c => c.region === region);
-    const districts = regionDistricts.map(d => d.district);
+  const districtsByRegion = (region) => {
+    const regionDistricts = serviceCenters.filter((c) => c.region === region);
+    const districts = regionDistricts.map((d) => d.district);
     return districts;
   };
 
-
   //  console.log(regions);
- 
-  // handle function run 
+
+  // handle function run
   const handleSendParcel = (data) => {
     console.log(data);
-   //  same district
-   const isSameDistrict = data.senderDistrict === data.receiverDistrict ;
-  //  console.log(isSameDistrict)
+    //  same district
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+    //  console.log(isSameDistrict)
 
-  //  pricing calculation
-   const isDocument = data.parcelType===('document')
-  //  parcel type 
-  const parcelWeight =parseFloat(data.parcelWeight);
+    //  pricing calculation
+    const isDocument = data.parcelType === "document";
+    //  parcel type
+    const parcelWeight = parseFloat(data.parcelWeight);
 
-   let cost = 0;
-    if(isDocument){
+    let cost = 0;
+    if (isDocument) {
       cost = isSameDistrict ? 60 : 80;
-    }
-   else{
-    if(parcelWeight < 3){
-      cost = isSameDistrict ? 110 : 150;
-    }
-    else {
-      const minCharge = isSameDistrict ? 110 : 150;
-      const extraWeight = parcelWeight - 3;
-      const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
+    } else {
+      if (parcelWeight < 3) {
+        cost = isSameDistrict ? 110 : 150;
+      } else {
+        const minCharge = isSameDistrict ? 110 : 150;
+        const extraWeight = parcelWeight - 3;
+        const extraCharge = isSameDistrict
+          ? extraWeight * 40
+          : extraWeight * 40 + 40;
 
-      cost = minCharge + extraCharge;
+        cost = minCharge + extraCharge;
+      }
     }
-   }
-   console.log("total cost", cost)
+    console.log("total cost", cost);
 
-  //  post korar somoy data ar sta cost o patano
-   data.cost = cost;
+    //  post korar somoy data ar sta cost o patano
+    data.cost = cost;
 
-  //  sweat alert ar maddome conform kora
+    //  sweat alert ar maddome conform kora
     Swal.fire({
-  title: "Agree with the Cost?",
-  text: `You will be charged ${cost} taka!`,
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "I agree!"
-  }).then((result) => {
-  if (result.isConfirmed) {
-    
-  //  save the parcel info to the database
-  //  post
-  axiosSecure.post('/parcels', data)
-  .then(res =>{
-    console.log('after saving parcel',res.data)
-  })
+      title: "Agree with the Cost?",
+      text: `You will be charged ${cost} taka!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Conform and Continue Payment!",
+    })
+    .then((result) => {
 
+      if (result.isConfirmed) {
+        //  save the parcel info to the database
+        //  post
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("after saving parcel", res.data);
 
-    // Swal.fire({
-    //   title: "Order Success!",
-    //   text: "Your file has been deleted.",
-    //   icon: "success"
-    // });
-  }
-   });
+          if (res.data.insertedId) {
+           
+            // navigate to my parcel page
+            navigate('/dashboard/my-parcel')
+
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Parcel has created . Please Pay ",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -155,7 +163,7 @@ const axiosSecure = useAxiosSecure();
             <input
               type="number"
               {...register("parcelWeight")}
-              className="input w-full" 
+              className="input w-full"
               placeholder="Parcel Weight"
             />
           </fieldset>
@@ -163,7 +171,6 @@ const axiosSecure = useAxiosSecure();
 
         {/* two column */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        
           <fieldset className="fieldset">
             <h4 className="text-2xl font-semibold">Sender Details</h4>
             {/* sender name */}
@@ -189,7 +196,11 @@ const axiosSecure = useAxiosSecure();
             {/* sender region */}
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Sender Regions</legend>
-              <select {...register("senderRegion")} defaultValue="Pick a region" className="select">
+              <select
+                {...register("senderRegion")}
+                defaultValue="Pick a region"
+                className="select"
+              >
                 <option disabled={true}>Pick a region</option>
                 {regions.map((r, i) => (
                   <option key={i} value={r}>
@@ -203,7 +214,11 @@ const axiosSecure = useAxiosSecure();
 
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Sender District</legend>
-              <select {...register("senderDistrict")} defaultValue="Pick a District" className="select">
+              <select
+                {...register("senderDistrict")}
+                defaultValue="Pick a District"
+                className="select"
+              >
                 <option disabled={true}>Pick a District</option>
                 {districtsByRegion(senderRegion).map((d, i) => (
                   <option key={i} value={d}>
@@ -243,10 +258,7 @@ const axiosSecure = useAxiosSecure();
             />
           </fieldset>
 
-
-
           {/*receiver info  */}
-
 
           <div>
             {/* receiver  name */}
@@ -270,32 +282,39 @@ const axiosSecure = useAxiosSecure();
               />
 
               {/* Receiver region */}
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Receiver Regions</legend>
-              <select {...register("receiverRegion")} defaultValue="Pick a region" className="select">
-                <option disabled={true}>Pick a region</option>
-                {regions.map((r, i) => (
-                  <option key={i} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Receiver Regions</legend>
+                <select
+                  {...register("receiverRegion")}
+                  defaultValue="Pick a region"
+                  className="select"
+                >
+                  <option disabled={true}>Pick a region</option>
+                  {regions.map((r, i) => (
+                    <option key={i} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
 
-            
-            {/* Receiver District */}
+              {/* Receiver District */}
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Receiver District</legend>
-              <select {...register("receiverDistrict")} defaultValue="Pick a District" className="select">
-                <option disabled={true}>Pick a District</option>
-                {districtsByRegion(receiverRegion).map((d, i) => (
-                  <option key={i} value={d}>
-                    {d}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Receiver District</legend>
+                <select
+                  {...register("receiverDistrict")}
+                  defaultValue="Pick a District"
+                  className="select"
+                >
+                  <option disabled={true}>Pick a District</option>
+                  {districtsByRegion(receiverRegion).map((d, i) => (
+                    <option key={i} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
 
               {/* Receiver address */}
 
@@ -316,8 +335,6 @@ const axiosSecure = useAxiosSecure();
                 className="input w-full"
                 placeholder="Receiver Phone Number"
               />
-
-              
 
               {/* receiver Pickup Instruction */}
 
