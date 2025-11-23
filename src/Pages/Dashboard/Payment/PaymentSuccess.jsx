@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link, useSearchParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -7,6 +7,8 @@ const PaymentSuccess = () => {
    
   // useSearchParams
   const [searchParams]= useSearchParams()
+
+ const [paymentInfo , setPaymentInfo] =useState({})
 
   // axiosSecure
   const axiosSecure = useAxiosSecure();
@@ -22,6 +24,10 @@ useEffect(()=>{
         axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
         .then(res=>{
           console.log(res.data)
+          setPaymentInfo({
+            transactionId: res.data.transactionId,
+            trackingId: res.data.trackingId
+          })
         })
     }
 },[sessionId, axiosSecure])
@@ -37,6 +43,9 @@ useEffect(()=>{
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
           Payment Successful!
         </h2>
+        <p className="text-red-400 font-bold">Your TransactionId: <span className="text-blue-600 text-xl">{paymentInfo.transactionId}</span> </p>
+
+        <p className="text-green-400 font-bold">Your Parcel Tracking Id: <span className="text-yellow-700 text-xl">{paymentInfo.trackingId}</span> </p>
 
         <p className="text-gray-600 mb-6">
           Your payment has been completed successfully. Thank you for your
