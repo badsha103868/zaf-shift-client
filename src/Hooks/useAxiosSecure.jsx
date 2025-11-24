@@ -14,6 +14,7 @@ const { user, logOut } = useAuth()
 const navigate = useNavigate()
 
   // axios  interceptor
+
   useEffect(() => {
     // interceptors request
    const reqInterceptor = axiosSecure.interceptors.request.use((config) => {
@@ -51,7 +52,7 @@ const navigate = useNavigate()
 
 
 
-  }, [user]);
+  }, [user, logOut, navigate]);
 
   return axiosSecure;
 };

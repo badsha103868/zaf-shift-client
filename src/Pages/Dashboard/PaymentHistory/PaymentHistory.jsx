@@ -28,10 +28,11 @@ const PaymentHistory = () => {
         <table className="table table-zebra">
           {/* head */}
           <thead>
-            <tr>
+            <tr className='font-semibold text-lg text-green-500'>
               <th></th>
               <th>Parcel Name</th>
               <th>Amount</th>
+              <th>Paid Time </th>
               <th>Transaction Id</th>
               <th>Tracking Id</th>
               <th>Payment Info</th>
@@ -44,6 +45,7 @@ const PaymentHistory = () => {
                 <th>{index + 1}</th>
                 <td >{payment.parcelName}</td>
                 <td>${payment.amount}</td>
+                <td>{payment.paidAt}</td>
                 <td>{payment.transactionId}</td>
                 <td>{payment.trackingId}</td>
                 <td>${payment.amount}({payment.paymentStatus})</td>
