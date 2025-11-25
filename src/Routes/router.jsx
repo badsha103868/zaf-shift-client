@@ -18,6 +18,11 @@ import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancelled from "../Pages/Dashboard/Payment/PaymentCancelled";
 import PaymentHistory from "../Pages/Dashboard/PaymentHistory/PaymentHistory";
 import ApproveRiders from "../Pages/Dashboard/ApproveRiders/ApproveRiders";
+import Story from "../Pages/About/Story";
+import Mission from "../Pages/About/Mission";
+import Success from "../Pages/About/Success";
+import Team from "../Pages/About/Team";
+import UsersManagement from "../Pages/Dashboard/UsersManagement/UsersManagement";
 
 
 
@@ -39,10 +44,29 @@ import ApproveRiders from "../Pages/Dashboard/ApproveRiders/ApproveRiders";
         Component: Coverage,
         loader: ()=> fetch('/serviceCenters.json').then(res => res.json())
       },
-      {
-        path: '/about',
-        Component: About
-      },
+     {
+  path: '/about',
+  Component: About,
+  children: [
+    {
+      index: true,
+      Component: Story,
+    },
+    {
+      path: 'mission',
+      Component: Mission,
+    },
+    {
+      path: 'success',
+      Component: Success,
+    },
+    {
+      path: 'team',
+      Component: Team,
+    },
+  ]
+},
+
       {
         path: '/sendParcel',
         element: <PrivateRoute>
@@ -109,6 +133,11 @@ import ApproveRiders from "../Pages/Dashboard/ApproveRiders/ApproveRiders";
       {
         path:'approve-riders',
         Component:ApproveRiders
+      },
+
+      {
+        path:'users-management',
+        Component: UsersManagement
       }
     ]
   }

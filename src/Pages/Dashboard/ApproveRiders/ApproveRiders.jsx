@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import { FaUserCheck } from "react-icons/fa";
+import { FaEye, FaUserCheck } from "react-icons/fa";
 import { IoPersonRemove, IoPersonRemoveSharp } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
@@ -80,7 +80,7 @@ const ApproveRiders = () => {
               <tr className="font-semibold text-lg" key={rider._id}>
                 <th>{index + 1}</th>
                 <td>{rider.name}</td>
-                <td>${rider.email}</td>
+                <td>{rider.email}</td>
 
                 <td>
                   <p className={`${rider.status === 'approved' ? 'text-green-500' : 'text-red-500'}`}>{rider.status}</p>
@@ -91,6 +91,12 @@ const ApproveRiders = () => {
                 <td>{rider.bike}</td>
 
                 <td className="space-x-2">
+                  <button
+                   
+                    className="p-2 btn"
+                  >
+                    <FaEye></FaEye>
+                  </button>
                   <button
                     onClick={() => handleApproval(rider)}
                     className="p-2 btn btn-primary text-black"
