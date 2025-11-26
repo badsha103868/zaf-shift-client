@@ -23,6 +23,7 @@ import Mission from "../Pages/About/Mission";
 import Success from "../Pages/About/Success";
 import Team from "../Pages/About/Team";
 import UsersManagement from "../Pages/Dashboard/UsersManagement/UsersManagement";
+import AdminRoute from "./AdminRoute";
 
 
 
@@ -137,7 +138,7 @@ import UsersManagement from "../Pages/Dashboard/UsersManagement/UsersManagement"
 
       {
         path:'users-management',
-        Component: UsersManagement
+      element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
       }
     ]
   }
