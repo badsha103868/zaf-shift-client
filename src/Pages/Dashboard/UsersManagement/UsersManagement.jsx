@@ -17,7 +17,7 @@ const UsersManagement = () => {
   });
 
   // user/ rider k admin role daua
-  const handleMakeUser = (user) => {
+  const handleMakeAdmin = (user) => {
     const roleInfo = { role: "admin" };
     // TODO: must ask for confirmation before proceed
     Swal.fire({
@@ -30,7 +30,7 @@ const UsersManagement = () => {
       confirmButtonText: "Conform and Continue!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             refetch();
             Swal.fire({
@@ -59,7 +59,7 @@ const UsersManagement = () => {
       confirmButtonText: "Conform and Continue!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             refetch();
             Swal.fire({
@@ -121,7 +121,7 @@ const UsersManagement = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleMakeUser(user)}
+                      onClick={() => handleMakeAdmin(user)}
                       className="btn bg-green-400"
                     >
                       <FaUserShield></FaUserShield>

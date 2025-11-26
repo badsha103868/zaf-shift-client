@@ -133,11 +133,13 @@ import AdminRoute from "./AdminRoute";
       },
       {
         path:'approve-riders',
-        Component:ApproveRiders
+        
+        element:<AdminRoute><ApproveRiders></ApproveRiders></AdminRoute>
       },
 
       {
         path:'users-management',
+     
       element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
       }
     ]
