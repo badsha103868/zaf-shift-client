@@ -164,6 +164,7 @@ const SendParcel = () => {
               type="number"
               {...register("parcelWeight")}
               className="input w-full"
+              required
               placeholder="Parcel Weight"
             />
           </fieldset>
