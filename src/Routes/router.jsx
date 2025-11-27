@@ -24,6 +24,7 @@ import Success from "../Pages/About/Success";
 import Team from "../Pages/About/Team";
 import UsersManagement from "../Pages/Dashboard/UsersManagement/UsersManagement";
 import AdminRoute from "./AdminRoute";
+import AssignRiders from "../Pages/Dashboard/AssignRiders/AssignRiders";
 
 
 
@@ -141,6 +142,10 @@ import AdminRoute from "./AdminRoute";
         path:'users-management',
      
       element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
+      },
+      {
+        path: 'assign-riders',
+        element: <AdminRoute><AssignRiders></AssignRiders></AdminRoute>
       }
     ]
   }

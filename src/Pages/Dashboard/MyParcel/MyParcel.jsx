@@ -64,21 +64,23 @@ const MyParcel = () => {
 
       {/* table */}
       <div className="overflow-x-auto">
-        <table className="table table-zebra">
+        <table className="table table-zebra ">
           {/* head */}
           <thead>
-            <tr>
+            <tr className="font-bold text-lg">
               <th></th>
               <th>Name</th>
               <th>Cost</th>
               <th>Payment</th>
+              <th>Tracking Id</th>
+             
               <th>Delivery Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {parcels.map((parcel, index) => (
-              <tr key={parcel._id}>
+              <tr className="font-bold text-lg" key={parcel._id}>
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
@@ -94,7 +96,9 @@ const MyParcel = () => {
 
 
                 }</td>
-                <td>{parcel.deliveryStatus}</td>
+                <td className="text-green-700 ">{parcel.trackingId}</td>
+                
+                <td className="text-green-700 ">{parcel.deliveryStatus}</td>
                 <td className="space-x-3">
                   <button className="btn btn-square hover:bg-primary">
                     <FiEdit></FiEdit>
