@@ -25,6 +25,9 @@ import Team from "../Pages/About/Team";
 import UsersManagement from "../Pages/Dashboard/UsersManagement/UsersManagement";
 import AdminRoute from "./AdminRoute";
 import AssignRiders from "../Pages/Dashboard/AssignRiders/AssignRiders";
+import RiderRoute from "./RiderRoute";
+import AssignDeliveries from "../Pages/Dashboard/AssignDeliveries/AssignDeliveries";
+import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
 
 
 
@@ -132,21 +135,34 @@ import AssignRiders from "../Pages/Dashboard/AssignRiders/AssignRiders";
         path: 'payment-history',
         Component: PaymentHistory
       },
-      {
-        path:'approve-riders',
-        
-        element:<AdminRoute><ApproveRiders></ApproveRiders></AdminRoute>
-      },
+
+      // rider only routes
 
       {
+        path: 'assigned-deliveries',
+        element: <RiderRoute><AssignDeliveries></AssignDeliveries></RiderRoute>
+      },
+      {
+        path: 'completed-deliveries',
+        element: <RiderRoute><CompletedDeliveries></CompletedDeliveries></RiderRoute>
+      },
+
+      // admin only routes
+      
+      {
+        path:'approve-riders',
+        element:<AdminRoute><ApproveRiders></ApproveRiders></AdminRoute>
+      },
+      
+      {
         path:'users-management',
-     
-      element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
+        element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
       },
       {
         path: 'assign-riders',
         element: <AdminRoute><AssignRiders></AssignRiders></AdminRoute>
-      }
+      },
+      
     ]
   }
 ]);   

@@ -1,149 +1,197 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import useAuth from '../../../Hooks/useAuth';
-import { Link, useLocation, useNavigate } from 'react-router';
-import SocialLogin from '../SocialLogin/SocialLogin';
-import axios from 'axios';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import useAuth from "../../../Hooks/useAuth";
+import { Link, useLocation, useNavigate } from "react-router";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import axios from "axios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
-  // react hook form 
-  const {register,handleSubmit, formState: {errors}} = useForm()
-  const location = useLocation()
-  console.log('in the register',location)
-  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const [firebaseError, setFirebaseError] = useState("");
+  // react hook form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const location = useLocation();
+  console.log("in the register", location);
+  const navigate = useNavigate();
 
   //  useHook import
-  const {registerUser, updateUserProfile}=useAuth(); 
+  const { registerUser, updateUserProfile } = useAuth();
 
-  const axiosSecure = useAxiosSecure()
-   
+  const axiosSecure = useAxiosSecure();
 
-  const handleRegistration =(data)=>{
-    console.log('after register', data)
+  const handleRegistration = (data) => {
+    console.log("after register", data);
     const profileImg = data.photo[0];
-      
+
     registerUser(data.email, data.password)
-    .then(result=>{
-      const user = result.user;
-      console.log(user)
-        
-      // store the image and get the photo url
-      const formData = new FormData();
-      formData.append('image', profileImg)
-  
-  const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
 
-  axios.post(image_API_URL, formData)
-  .then(res=> {
-    //  console.log('after image upload', res.data.data.url)
-    const photoURL = res.data.data.url;
+        // store the image and get the photo url
+        const formData = new FormData();
+        formData.append("image", profileImg);
 
-    // user create in database
-    const userInfo = {
-     email: data.email,
-     displayName: data.name,
-     photoURL: photoURL
+        const image_API_URL = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host_key
+        }`;
 
-    }
-    
-    axiosSecure.post('/users', userInfo)
-    .then(res =>{
-      if(res.data.insertedId){
-        console.log('user created in the database')
-      }
-    })
+        axios.post(image_API_URL, formData).then((res) => {
+          //  console.log('after image upload', res.data.data.url)
+          const photoURL = res.data.data.url;
 
-   //  update user  profile
+          // user create in database
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL: photoURL,
+          };
 
-   const updateProfile =  {
-    displayName : data.name,
-    photoURL : photoURL
-   }
-   updateUserProfile( updateProfile )
-   .then(()=>{
-    console.log('user profile updated done ')
-     
-    navigate(location?.state || '/' )
-       
-   })
-   .catch(error=>{
-    console.log(error.message)
-   })
+          axiosSecure.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user created in the database");
+            }
+          });
 
-  })
-    
+          //  update user  profile
 
-    })
-    .catch(error=>{
-      console.log(error.message)
-    })
-  }
+          const updateProfile = {
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          updateUserProfile(updateProfile)
+            .then(() => {
+              console.log("user profile updated done ");
+
+              navigate(location?.state || "/");
+            })
+            .catch((error) => {
+              console.log(error.message);
+              setFirebaseError(error.message);
+            });
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
-    <div  className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
+    <div className="card bg-base-100 mx-auto w-full max-w-sm shrink-0 shadow-2xl">
       <form className="card-body " onSubmit={handleSubmit(handleRegistration)}>
-     <h3 className="text-center font-bold text-3xl">Welcome to Zap Shift </h3>
-      <p className=" mt-3 font-bold text-lg">Please register</p>
-         
-         <fieldset className="fieldset">
+        <h3 className="text-center font-bold text-3xl">
+          Welcome to Zap Shift{" "}
+        </h3>
+        <p className=" mt-3 font-bold text-lg">Please register</p>
 
+        <fieldset className="fieldset">
           {/*name field*/}
           <label className="label">Name</label>
-          <input type="text" {...register('name', {required: true})} className="input w-full" placeholder="Your name" />
+          <input
+            type="text"
+            {...register("name", { required: true })}
+            className="input w-full"
+            placeholder="Your name"
+          />
 
-           {errors.name?.type === "required" && (
-        <p className='text-red-500'>Name is required</p>
-         )}
+          {errors.name?.type === "required" && (
+            <p className="text-red-500">Name is required</p>
+          )}
 
           {/*phot image  field*/}
           <label className="label">Photo</label>
-          <input type="file" {...register('photo', {required: true})} className="file-input w-full" placeholder="Your photo" />
+          <input
+            type="file"
+            {...register("photo", { required: true })}
+            className="file-input w-full"
+            placeholder="Your photo"
+          />
 
-           {errors.photo?.type === "required" && (
-        <p className='text-red-500'>Photo is required</p>
-         )}
+          {errors.photo?.type === "required" && (
+            <p className="text-red-500">Photo is required</p>
+          )}
 
           {/* email */}
           <label className="label">Email</label>
-          <input type="email" {...register('email', {required: true})} className="input w-full" placeholder="Email" />
+          <input
+            type="email"
+            {...register("email", { required: true })}
+            className="input w-full"
+            placeholder="Email"
+          />
 
-          
           {errors.email?.type === "required" && (
-        <p className='text-red-500'>Email is required</p>
-         )}
+            <p className="text-red-500">Email is required</p>
+          )}
 
           {/* password */}
           <label className="label">Password</label>
-          <input type="password" 
-          {...register('password',
-           {required: true ,
-            minLength: 6,
-            pattern:/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/
-            })} className="input w-full" placeholder="Password" />
+          <div className="relative">
+            <input
+             type={showPassword ? "text" : "password"}
+              {...register("password", {
+                required: true,
+                minLength: 6,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+              })}
+              className="input w-full"
+              placeholder="Password"
+            />
+            {/* 👁️ Show/Hide Button */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="btn btn-xs top-2 right-5 absolute"
+            >
+              {showPassword ? <FaEyeSlash
+               /> : <FaEye />}
+            </button>
+          </div>
 
-
-            {/* required error */}
+          {/* required error */}
 
           {errors.password?.type === "required" && (
-        <p className='text-red-500'>Password is required</p>
-         )}
- 
+            <p className="text-red-500">Password is required</p>
+          )}
+
           {/* length error */}
 
           {errors.password?.type === "minLength" && (
-        <p className='text-red-500'>Password must be 6 character or longer</p>
-         )}
+            <p className="text-red-500">
+              Password must be 6 character or longer
+            </p>
+          )}
 
-         {/* pattern error  */}
+          {/* pattern error  */}
           {errors.password?.type === "pattern" && (
-        <p className='text-red-500'>password must  have at least on uppercase or lowercase and one number</p>
-         )}
-         
+            <p className="text-red-500">
+              password must have at least on uppercase or lowercase and one
+              number
+            </p>
+          )} 
+          {/*  Firebase Error Output */}
+          {firebaseError && (
+            <p className="text-red-500 font-semibold">{firebaseError}</p>
+          )}
+
           <button className="btn btn-neutral mt-4">Register</button>
         </fieldset>
-        <p>Already Have An Account ? <Link state={location.state}
-         className="text-blue-400 underline text-lg" to='/login'>Login</Link></p>
+        <p>
+          Already Have An Account ?{" "}
+          <Link
+            state={location.state}
+            className="text-blue-400 underline text-lg"
+            to="/login"
+          >
+            Login
+          </Link>
+        </p>
       </form>
       <SocialLogin></SocialLogin>
     </div>
