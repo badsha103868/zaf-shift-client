@@ -73,7 +73,7 @@ const MyParcel = () => {
               <th>Cost</th>
               <th>Payment</th>
               <th>Tracking Id</th>
-             
+
               <th>Delivery Status</th>
               <th>Actions</th>
             </tr>
@@ -85,19 +85,26 @@ const MyParcel = () => {
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost} ৳</td>
                 <td>
-                {
-                  //  payment status conditional set
-                  parcel.paymentStatus === 'paid' ? <span className="text-green-400">Paid</span>:
-          <Link to={`/dashboard/payment/${parcel._id}`}>
-                   <button className="btn btn-sm text-black btn-primary">Pay</button>
-                  </Link>
-
-
-
-
-                }</td>
-                <td className="text-green-700 ">{parcel.trackingId}</td>
+                  {
+                    //  payment status conditional set
+                    parcel.paymentStatus === "paid" ? (
+                      <span className="text-green-400">Paid</span>
+                    ) : (
+                      <Link to={`/dashboard/payment/${parcel._id}`}>
+                        <button className="btn btn-sm text-black btn-primary">
+                          Pay
+                        </button>
+                      </Link>
+                    )
+                  }
+                </td>
                 
+                <td className="text-green-700 ">
+                  <Link to={`/parcel-track/${parcel.trackingId}`}>
+                     {parcel.trackingId}
+                  </Link>
+                </td>
+
                 <td className="text-green-700 ">{parcel.deliveryStatus}</td>
                 <td className="space-x-3">
                   <button className="btn btn-square hover:bg-primary">

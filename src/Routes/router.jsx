@@ -28,141 +28,167 @@ import AssignRiders from "../Pages/Dashboard/AssignRiders/AssignRiders";
 import RiderRoute from "./RiderRoute";
 import AssignDeliveries from "../Pages/Dashboard/AssignDeliveries/AssignDeliveries";
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
+import ParcelTrack from "../Pages/ParcelTrack/ParcelTrack";
 
-
-
-  export const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    children:[
+    children: [
       {
         index: true,
-        Component:Home
+        Component: Home,
       },
       {
-        path: '/services',
-        Component: Services
+        path: "/services",
+        Component: Services,
       },
       {
-        path: '/coverage',
+        path: "/coverage",
         Component: Coverage,
-        loader: ()=> fetch('/serviceCenters.json').then(res => res.json())
+        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
       },
-     {
-  path: '/about',
-  Component: About,
-  children: [
-    {
-      index: true,
-      Component: Story,
-    },
-    {
-      path: 'mission',
-      Component: Mission,
-    },
-    {
-      path: 'success',
-      Component: Success,
-    },
-    {
-      path: 'team',
-      Component: Team,
-    },
-  ]
-},
+      {
+         path: '/parcel-track/:trackingId',
+         Component:ParcelTrack
+      },
+      {
+        path: "/about",
+        Component: About,
+        children: [
+          {
+            index: true,
+            Component: Story,
+          },
+          {
+            path: "mission",
+            Component: Mission,
+          },
+          {
+            path: "success",
+            Component: Success,
+          },
+          {
+            path: "team",
+            Component: Team,
+          },
+        ],
+      },
 
       {
-        path: '/sendParcel',
-        element: <PrivateRoute>
-           <SendParcel></SendParcel>
-        </PrivateRoute>,
-        loader: ()=> fetch('/serviceCenters.json').then(res => res.json())
+        path: "/sendParcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
       },
       {
-        path: '/pricing',
-        Component: Pricing
-      },
-      
-      {
-        path: '/rider',
-        element: <PrivateRoute>
-           <Rider></Rider>
-        </PrivateRoute>,
-        loader: ()=> fetch('/serviceCenters.json').then(res => res.json())
+        path: "/pricing",
+        Component: Pricing,
       },
 
-    ]
+      {
+        path: "/rider",
+        element: (
+          <PrivateRoute>
+            <Rider></Rider>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
+      },
+    ],
   },
   {
-    path:'/',
+    path: "/",
     Component: AuthLayout,
-    children:[
+    children: [
       {
-        path: '/login',
-        Component:Login
+        path: "/login",
+        Component: Login,
       },
       {
-        path: '/register',
-        Component:Register
+        path: "/register",
+        Component: Register,
       },
-    ]
+    ],
   },
   {
-    path:'/dashboard',
-    element: <PrivateRoute>
-      <DashboardLayout></DashboardLayout>
-    </PrivateRoute>,
-    children:[
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
       {
-        path:'my-parcel',
-        Component:MyParcel
-
+        path: "my-parcel",
+        Component: MyParcel,
       },
       {
-        path: 'payment/:parcelId',
-        Component: Payment
+        path: "payment/:parcelId",
+        Component: Payment,
       },
       {
-        path: 'payment-success',
-        Component:PaymentSuccess 
+        path: "payment-success",
+        Component: PaymentSuccess,
       },
       {
-        path: 'payment-cancelled',
-        Component: PaymentCancelled
+        path: "payment-cancelled",
+        Component: PaymentCancelled,
       },
       {
-        path: 'payment-history',
-        Component: PaymentHistory
+        path: "payment-history",
+        Component: PaymentHistory,
       },
 
       // rider only routes
 
       {
-        path: 'assigned-deliveries',
-        element: <RiderRoute><AssignDeliveries></AssignDeliveries></RiderRoute>
+        path: "assigned-deliveries",
+        element: (
+          <RiderRoute>
+            <AssignDeliveries></AssignDeliveries>
+          </RiderRoute>
+        ),
       },
       {
-        path: 'completed-deliveries',
-        element: <RiderRoute><CompletedDeliveries></CompletedDeliveries></RiderRoute>
+        path: "completed-deliveries",
+        element: (
+          <RiderRoute>
+            <CompletedDeliveries></CompletedDeliveries>
+          </RiderRoute>
+        ),
       },
 
       // admin only routes
-      
+
       {
-        path:'approve-riders',
-        element:<AdminRoute><ApproveRiders></ApproveRiders></AdminRoute>
+        path: "approve-riders",
+        element: (
+          <AdminRoute>
+            <ApproveRiders></ApproveRiders>
+          </AdminRoute>
+        ),
       },
-      
+
       {
-        path:'users-management',
-        element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
+        path: "users-management",
+        element: (
+          <AdminRoute>
+            <UsersManagement></UsersManagement>
+          </AdminRoute>
+        ),
       },
       {
-        path: 'assign-riders',
-        element: <AdminRoute><AssignRiders></AssignRiders></AdminRoute>
+        path: "assign-riders",
+        element: (
+          <AdminRoute>
+            <AssignRiders></AssignRiders>
+          </AdminRoute>
+        ),
       },
-      
-    ]
-  }
-]);   
+    ],
+  },
+]);
