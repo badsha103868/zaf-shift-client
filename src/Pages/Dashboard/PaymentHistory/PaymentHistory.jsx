@@ -44,7 +44,7 @@ const PaymentHistory = () => {
               <tr className='font-semibold text-lg' key={payment._id}>
                 <th>{index + 1}</th>
                 <td >{payment.parcelName}</td>
-                <td>${payment.amount}</td>
+                <td>${payment.amount} ৳</td>
                 <td>{payment.paidAt}</td>
                 <td>{payment.transactionId}</td>
                 <td>{payment.trackingId}</td>

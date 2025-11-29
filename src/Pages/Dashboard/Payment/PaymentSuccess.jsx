@@ -62,7 +62,7 @@ const PaymentSuccess = () => {
 
         <Link to="/dashboard/my-parcel">
           <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
-            Go Home
+            Go My Parcel
           </button>
         </Link>
       </div>

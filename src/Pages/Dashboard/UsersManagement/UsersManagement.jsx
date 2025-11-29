@@ -115,8 +115,8 @@ const UsersManagement = () => {
               <th>Sl No.</th>
               <th>User</th>
               <th>Email</th>
-              <th>Role</th> <th>Admin Action</th>
-              <th>Others Actions</th>
+              <th>Role</th> 
+           
             </tr>
           </thead>
           <tbody>
@@ -157,8 +157,7 @@ const UsersManagement = () => {
                   )}
                 </td>
 
-                <td>Admin</td>
-                <th>Actions</th>
+                
               </tr>
             ))}
           </tbody>

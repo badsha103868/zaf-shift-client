@@ -83,7 +83,7 @@ const MyParcel = () => {
               <tr className="font-bold text-lg" key={parcel._id}>
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
-                <td>{parcel.cost}</td>
+                <td>{parcel.cost} ৳</td>
                 <td>
                 {
                   //  payment status conditional set
