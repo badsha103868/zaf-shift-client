@@ -70,7 +70,7 @@ const MyParcel = () => {
       paymentInfo
     );
 
-    console.log(res.data.url);
+    // console.log(res.data.url);
     window.location.assign(res.data.url);
   };
 

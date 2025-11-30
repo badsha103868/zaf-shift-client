@@ -22,11 +22,9 @@ const Navbar = () => {
         <NavLink to="/services">Services</NavLink>
       </li>
       <li>
-        <NavLink to="/coverage">Coverage</NavLink>
+        <NavLink to="/coverage">Coverage Areas</NavLink>
       </li>
-      <li>
-        <NavLink to="/about">About Us</NavLink>
-      </li>
+     
       <li>
         <NavLink to="/sendParcel">Send Parcel</NavLink>
       </li>
@@ -41,8 +39,14 @@ const Navbar = () => {
           <li>
             <NavLink to="/dashboard/my-parcel">My Parcels</NavLink>
           </li>
+          <li>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </li>
         </>
       )}
+       <li>
+        <NavLink to="/about">About Us</NavLink>
+      </li>
     </>
   );
   return (
